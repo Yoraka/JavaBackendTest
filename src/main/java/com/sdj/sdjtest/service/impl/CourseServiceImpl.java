@@ -72,4 +72,19 @@ public class CourseServiceImpl implements CourseService{
         }).collect(Collectors.toList());
         return pageInfo;
     }
+    @Override
+    public boolean updateCourse(CourseDTO courseDTO) {
+        Course course = new Course();
+        course.setId(courseDTO.getId());
+        course.setCourseName(courseDTO.getCourseName());
+        course.setCourseType(courseDTO.getCourseType());
+        course.setTeacherName(courseDTO.getTeacherName());
+        course.setPayType(courseDTO.getPayType());
+        int result = courseMapper.updateCourse(course);
+        if(result > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

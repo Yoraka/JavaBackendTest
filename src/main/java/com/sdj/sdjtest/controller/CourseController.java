@@ -45,6 +45,14 @@ public class CourseController {
         courseName, teacherName);
         return ResponseEntity.ok(Result.ok("查询成功",pageInfo));
     }
+    //修改课程
+    @RequiresRoles("admin")
+    @PostMapping("/updateCourse")
+    public ResponseEntity<Result> updateCourse(@RequestBody CourseDTO courseDTO){
+        boolean success = courseService.updateCourse(courseDTO);
+        return success ? ResponseEntity.status(200).body(Result.ok("修改成功")) :
+        ResponseEntity.status(200).body(Result.error("修改失败"));
+    }
     //删除课程
     @RequiresRoles("admin")
     @GetMapping("deleteCourse")

@@ -33,4 +33,6 @@ public interface CourseMapper {
     Course selectCourseById(Long id);
     @Select("select * from course_user where id = #{id} and state = 0")
     List<CourseUser> selectCourseUserById(Long id);
+    @Update("update course set course_name = #{courseName},teacher_name = #{teacherName},course_type = #{courseType},pay_type = #{payType} where id = #{id}")
+    int updateCourse(Course course);
 }

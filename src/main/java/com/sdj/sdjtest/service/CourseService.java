@@ -20,5 +20,7 @@ public interface CourseService {
     Course selectCourseById(Long id);
 
     PageInfo<CourseUser> selectCourseUserById(Integer page, Integer limit, Long id);
+
+    boolean updateCourse(CourseDTO courseDTO);
     
 }
