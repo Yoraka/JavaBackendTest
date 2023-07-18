@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/background
@@ -8,7 +10,7 @@ spring:
   redis:
     host: localhost
     port: 6379
-
+    
 mybatis:
   configuration:
     map-underscore-to-camel-case: true

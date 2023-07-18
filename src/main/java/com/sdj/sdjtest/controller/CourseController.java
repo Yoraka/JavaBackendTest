@@ -3,9 +3,11 @@ package com.sdj.sdjtest.controller;
 import java.util.List;
 
 import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,13 +20,13 @@ import com.sdj.sdjtest.entity.Course;
 import com.sdj.sdjtest.entity.CourseUser;
 import com.sdj.sdjtest.service.CourseService;
 import com.sdj.sdjtest.vo.Result;
-
+@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 @RestController
 public class CourseController {
     @Autowired
     private CourseService courseService;
     //添加课程
-    @RequiresRoles("admin")
+    @RequiresGuest
     @PostMapping("/addCourse")
     public ResponseEntity<Result> addCourse(@RequestBody CourseDTO courseDTO){
         boolean success = courseService.addCourse(courseDTO);
@@ -35,7 +37,7 @@ public class CourseController {
         }
     }
     //查询课程
-    @RequiresRoles(value={"admin","common"},logical= Logical.OR)
+    @RequiresGuest
     @GetMapping("/selectCourse")
     public ResponseEntity<Result> selectCourse (@RequestParam(required = false,defaultValue = "1") Integer page,
                                                 @RequestParam(required = false,defaultValue = "10") Integer limit,
@@ -46,7 +48,7 @@ public class CourseController {
         return ResponseEntity.ok(Result.ok("查询成功",pageInfo));
     }
     //修改课程
-    @RequiresRoles("admin")
+    @RequiresGuest
     @PostMapping("/updateCourse")
     public ResponseEntity<Result> updateCourse(@RequestBody CourseDTO courseDTO){
         boolean success = courseService.updateCourse(courseDTO);
@@ -54,7 +56,7 @@ public class CourseController {
         ResponseEntity.status(200).body(Result.error("修改失败"));
     }
     //删除课程
-    @RequiresRoles("admin")
+    @RequiresGuest
     @GetMapping("deleteCourse")
     public ResponseEntity<Result>deleteCourse(Long id){
         boolean success = courseService.deleteCourse(id);
@@ -62,14 +64,14 @@ public class CourseController {
         ResponseEntity.status(200).body(Result.error("删除失败"));
     }
     //根据课程id查询课程course表信息
-    @RequiresRoles(value={"admin","common"},logical= Logical.OR)
+    @RequiresGuest
     @GetMapping("/selectCourseById")
     public ResponseEntity<Result> selectCourseById(Long id){
         Course course = courseService.selectCourseById(id);
         return ResponseEntity.ok(Result.ok("查询成功",course));
     }
     //根据课程id查询课程course_user表信息
-    @RequiresRoles(value={"admin","common"},logical= Logical.OR)
+    @RequiresGuest
     @GetMapping("/selectCourseUserById")
     public ResponseEntity<Result> selectCourseUserById(@RequestParam(required = false,defaultValue = "1") Integer page,
                                                        @RequestParam(required = false,defaultValue = "10") Integer limit,

@@ -31,7 +31,7 @@ import com.sdj.sdjtest.utils.JWTUtil;
 import com.sdj.sdjtest.utils.SMSUtil;
 import com.sdj.sdjtest.utils.StringUtil;
 import com.sdj.sdjtest.vo.Result;
-@CrossOrigin(exposedHeaders = "key,token")
+@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 @RestController
 public class UserController {
     @Autowired

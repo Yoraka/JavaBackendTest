@@ -25,8 +25,8 @@ public class SMSUtil {
      */
     public static SendSmsResponseBody sendSMS(String phone, String code) throws ExecutionException, InterruptedException {
         StaticCredentialProvider provider = StaticCredentialProvider.create(Credential.builder()
-                .accessKeyId("")
-                .accessKeySecret("")
+                .accessKeyId("LTAI5tRJoA76eY3Djn9EedPB")
+                .accessKeySecret("zWiVNJWTKp5DI8CgvM6LMVlE9EfZZh")
                 //.securityToken("<your-token>") // use STS token
                 .build());
 

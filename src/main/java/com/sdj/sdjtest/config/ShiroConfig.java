@@ -4,14 +4,21 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.sdj.sdjtest.filter.MyAuthenticationFilter;
+import com.sdj.sdjtest.filter.OptionalFilter;
 import com.sdj.sdjtest.realm.UserRealm;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import javax.servlet.Filter;
  
 /**
  * @Author : JCccc
@@ -48,6 +55,13 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
+        
+        
+        Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
+        filters.put("authc", new OptionalFilter());
+        shiroFilterFactoryBean.setFilters(filters);
+
+
         Map<String, String> map = new HashMap<>();
         map.put("/updatePassword","anon");
         map.put("/sendSMS","anon");
@@ -57,10 +71,11 @@ public class ShiroConfig {
         map.put("/logout", "anon");
         //对所有用户认证
         map.put("/**", "authc");
-
         //登录
         shiroFilterFactoryBean.setLoginUrl("/login");
- 
+        // Map<String, Filter> filterMap = shiroFilterFactoryBean.getFilters();
+        // filterMap.put("authc", new MyAuthenticationFilter());
+
         //成功登录后跳转的url
         //shiroFilterFactoryBean.setSuccessUrl("/xxxx");
  
