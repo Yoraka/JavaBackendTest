@@ -57,8 +57,9 @@ public class CourseController {
     }
     //删除课程
     @RequiresGuest
-    @GetMapping("deleteCourse")
+    @PostMapping("deleteCourse")
     public ResponseEntity<Result>deleteCourse(Long id){
+        System.out.println(id);
         boolean success = courseService.deleteCourse(id);
         return success ? ResponseEntity.status(200).body(Result.ok("删除成功")) :
         ResponseEntity.status(200).body(Result.error("删除失败"));
@@ -76,6 +77,8 @@ public class CourseController {
     public ResponseEntity<Result> selectCourseUserById(@RequestParam(required = false,defaultValue = "1") Integer page,
                                                        @RequestParam(required = false,defaultValue = "10") Integer limit,
                                                        Long id){
+                                        System.out.println(id);
+                                    
         PageInfo<CourseUser> courseUserPage = courseService.selectCourseUserById(page, limit, id);
         return ResponseEntity.ok(Result.ok("查询成功",courseUserPage));
     }

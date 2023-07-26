@@ -5,7 +5,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/background
     username: BlueDot
-    password: 4255150ls
+    password: your-password
 
   redis:
     host: localhost

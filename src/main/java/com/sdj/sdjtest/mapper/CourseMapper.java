@@ -31,7 +31,7 @@ public interface CourseMapper {
     int deleteCourse(Long id);
     @Select("select id,course_name,teacher_name,course_type,pay_type,state from course where id = #{id}")
     Course selectCourseById(Long id);
-    @Select("select * from course_user where id = #{id} and state = 0")
+    @Select("select * from course_user where course_id = #{id} and state = 0")
     List<CourseUser> selectCourseUserById(Long id);
     @Update("update course set course_name = #{courseName},teacher_name = #{teacherName},course_type = #{courseType},pay_type = #{payType} where id = #{id}")
     int updateCourse(Course course);

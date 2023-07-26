@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class UserController {
         return "Hello, World!";
     }
     //发送短信
+    @CrossOrigin(exposedHeaders = "key")
     @RequestMapping("/sendSMS")
     public ResponseEntity<Result> sendSMS(String phone){
         String key = StringUtil.uuid();
@@ -67,6 +69,7 @@ public class UserController {
         }
     }
     //注册
+    @CrossOrigin(exposedHeaders = "key")
     @PostMapping("reg")
     public ResponseEntity<Result> reg(@Validated @RequestBody UserDTO userDTO, @RequestHeader("key") String key){
         String code = (String) redisTemplate.opsForValue().get(key);
@@ -90,6 +93,7 @@ public class UserController {
         
     }
     //获取验证码
+    @CrossOrigin(exposedHeaders = "key")
     @GetMapping("imageCode")
     public ResponseEntity<Result> imageCode(){
         String text = defaultKaptcha.createText();
@@ -102,10 +106,13 @@ public class UserController {
         return ResponseEntity.status(200).header("key",uuid).body(Result.ok("获取成功",image2String));
     }
     //登录
+    @RequiresGuest
+    @CrossOrigin(exposedHeaders = "key")
     @PostMapping("login")
     public ResponseEntity<Result> login(@Validated @RequestBody UserDTO userDTO, @RequestHeader("key") String key){
         String code = (String) redisTemplate.opsForValue().get(key);
         if(code == null){
+            //return ResponseEntity.status(200).body(Result.ok("登录成功"));
             return ResponseEntity.status(200).body(Result.error("验证码已过期"));
         }
         if(!code.equals(userDTO.getCode())){
@@ -120,7 +127,7 @@ public class UserController {
         }
     }
     //获取用户信息
-    @RequiresRoles(value={"admin","common"},logical= Logical.OR)
+    @RequiresGuest
     @GetMapping("getUserInfo")
     public ResponseEntity<Result> getUserInfo(){
         Subject subject = SecurityUtils.getSubject();
@@ -163,7 +170,7 @@ public class UserController {
         }
     }
     //选课
-    @RequiresRoles(value={"admin","common"},logical= Logical.OR)
+    @RequiresGuest
     @PostMapping("signToCourse")
     public ResponseEntity<Result> signToCourse(Long courseId){
         Subject subject = SecurityUtils.getSubject();
@@ -179,7 +186,7 @@ public class UserController {
         }
     }
     //退课
-    @RequiresRoles(value={"admin","common"},logical= Logical.OR)
+    @RequiresGuest
     @PostMapping("signOutCourse")
     public ResponseEntity<Result> signOutCourse(Long courseId){
         Subject subject = SecurityUtils.getSubject();
@@ -195,6 +202,7 @@ public class UserController {
         }
     }
     //修改密码
+    @RequiresGuest
     @PostMapping("updatePassword")
     public ResponseEntity<Result> updatePassword(@Validated @RequestBody UserDTO userDTO, @RequestHeader("key") String key){
         String code = (String) redisTemplate.opsForValue().get(key);

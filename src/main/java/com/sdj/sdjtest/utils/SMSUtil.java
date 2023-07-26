@@ -25,8 +25,8 @@ public class SMSUtil {
      */
     public static SendSmsResponseBody sendSMS(String phone, String code) throws ExecutionException, InterruptedException {
         StaticCredentialProvider provider = StaticCredentialProvider.create(Credential.builder()
-                .accessKeyId("LTAI5tRJoA76eY3Djn9EedPB")
-                .accessKeySecret("zWiVNJWTKp5DI8CgvM6LMVlE9EfZZh")
+                .accessKeyId("<your-key>")
+                .accessKeySecret("<your-secret>")
                 //.securityToken("<your-token>") // use STS token
                 .build());
 
@@ -48,8 +48,8 @@ public class SMSUtil {
 
         // Parameter settings for API request
         SendSmsRequest sendSmsRequest = SendSmsRequest.builder()
-                .signName("卢胜禹的博客") // 签名的名称
-                .templateCode("SMS_461816012")//模板的code
+                .signName("") // 签名的名称
+                .templateCode("")//模板的code
                 .phoneNumbers(phone)
                 .templateParam("{\"code\":\"" + code + "\"}")
                 // Request-level configuration rewrite, can set Http request parameters, etc.
